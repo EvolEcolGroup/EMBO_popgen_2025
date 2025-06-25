@@ -24,4 +24,4 @@ print(mutated_ts.tables.sites)
 
 for variant in mutated_ts.variants():
     print(variant)
-
+    

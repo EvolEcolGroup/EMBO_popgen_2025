@@ -31,7 +31,7 @@ length = 10_000
 seed = 4711
 reco = 1e-8
 pop_size = 10_000
-num_simulations = 100
+num_simulations = 1000
 
 results = repeat_simulations(mut, sample_sizes, length, reco, pop_size, num_simulations, seed=seed)
 

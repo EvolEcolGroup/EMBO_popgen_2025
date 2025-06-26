@@ -1,5 +1,5 @@
 library(smacof);
-install.packages('genio')
+install.packages('BEDMatrix')
 library("genio");
 library("BEDMatrix");
 library("vegan");
@@ -627,8 +627,8 @@ read.table(file=paste(project@runs[best][[1]]@directory,project@runs[best][[1]]@
 library(SNPRelate)
 
 # Convert VCF to GDS (use your own file path)
-snpgdsVCF2GDS("your_data.vcf", "your_data.gds", method = "biallelic.only")
-genofile <- snpgdsOpen("your_data.gds")
+snpgdsVCF2GDS("../../../AATALL02.142.raw.mac6.invremoved.noLG14.vcf.gz", "../../../AATALL02.142.raw.mac6.invremoved.noLG14.gds", method = "biallelic.only")
+genofile <- snpgdsOpen("../../../AATALL02.142.raw.mac6.invremoved.noLG14.gds")
 
 # Inspect sample and SNP data
 sample.id <- read.gdsn(index.gdsn(genofile, "sample.id"))
@@ -641,7 +641,7 @@ snp.id <- read.gdsn(index.gdsn(genofile, "snp.id"))
 # Perform PCA on the genotype data.
 # Plot the first two principal components.
 
-pca <- snpgdsPCA(genofile, autosome.only = TRUE)
+pca <- snpgdsPCA(genofile, autosome.only = FALSE)
 pc.percent <- pca$varprop * 100
 
 # Tidy data for plotting
@@ -650,10 +650,10 @@ pca_df <- data.frame(
   PC1 = pca$eigenvect[,1],
   PC2 = pca$eigenvect[,2]
 )
-
+library(ggplot2)
 ggplot(pca_df, aes(x = PC1, y = PC2)) +
   geom_point() +
-  labs(title = "PCA of Genotype Data")
+  labs(title = "PCA of Genotype Data")+theme_bw()
 
 #########################################################################
 # 13. Cluster Individuals Based on Genetic Similarity
@@ -681,7 +681,7 @@ scatter(dapc_res, scree.da = TRUE)
 
 library(mclust);
 
-clus <- Mclust(smac$conf[,1:5], G= 1:10)
+clus <- Mclust(pca_df[,1:2], G= 1:10)
 plot(clus)
 
 library("dbscan");
